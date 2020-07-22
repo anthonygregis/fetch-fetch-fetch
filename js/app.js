@@ -1,4 +1,65 @@
 const pokemonGeneration = "https://pokeapi.co/api/v2/pokemon/"
+const container = document.querySelector('.container')
+
+const getPokeTypeColor = (pokeTypes) => {
+    console.log(pokeTypes)
+    if (pokeTypes.includes("fire")) {
+        return "btn btn-outline-danger"
+    } else if (pokeTypes.includes("grass") || pokeTypes.includes("bug")) {
+        return "btn btn-outline-success"
+    } else if (pokeTypes.includes("water")) {
+        return "btn btn-outline-primary"
+    } else if (pokeTypes.includes("poison")) {
+        return "btn btn-outline-dark"
+    } else if (pokeTypes.includes("normal")) {
+        return "btn btn-outline-secondary"
+    }
+}
+
+const createCard = (pokeName, pokePic, pokeTypes, pokeHeight, pokeWeight, pokeMoves) => {
+    let pokeCard = document.createElement('div')
+    pokeCard.setAttribute('class', 'card m-2')
+    pokeCard.style.width = "18rem"
+
+    const pokeImage = document.createElement('img')
+    pokeImage.src = pokePic
+    pokeImage.classList.add('card-img-top')
+    pokeImage.alt = pokeName
+
+    let pokeCardBody = document.createElement('div')
+    pokeCardBody.classList.add('card-body')
+
+    let pokeCardName = document.createElement('h5')
+    pokeCardName.classList.add('card-title')
+    pokeCardName.textContent = pokeName
+
+    let pokeCardTypes = document.createElement('a')
+    pokeCardTypes.setAttribute('class', getPokeTypeColor(pokeTypes))
+    pokeCardTypes.textContent = pokeTypes
+
+    let pokeCardList = document.createElement('ul')
+    pokeCardList.setAttribute('class','list-group list-group-flush')
+
+    let pokeCardHeight = document.createElement('li')
+    pokeCardHeight.classList.add('list-group-item')
+    pokeCardHeight.textContent = pokeHeight
+
+    let pokeCardWeight = document.createElement('li')
+    pokeCardWeight.classList.add('list-group-item')
+    pokeCardWeight.textContent = pokeWeight
+
+    let pokeCardMoves = document.createElement('li')
+    pokeCardMoves.classList.add('list-group-item')
+    pokeCardMoves.textContent = pokeMoves
+
+
+
+    pokeCardBody.append(pokeCardName, pokeCardTypes)
+    pokeCardList.append(pokeCardHeight, pokeCardWeight, pokeCardMoves)
+    pokeCard.append(pokeImage, pokeCardBody, pokeCardList)
+
+    container.appendChild(pokeCard)
+}
 
 const displayPokemon = (pokemon) => {
     fetch(pokemon.url).then(response => {
@@ -7,13 +68,12 @@ const displayPokemon = (pokemon) => {
         }
     })
         .then(pokemonData => {
-            let pokeCard = document.createElement('div').classList.add('card')
-
             let profilePic = pokemonData.sprites.front_default
             let pokeName = pokemonData.name
+            let pokeNameCapitalized = pokeName.charAt(0).toUpperCase() + pokeName.slice(1)
             let pokeTypes = ""
-            let pokeHeight = pokemonData.height
-            let pokeWeight = pokemonData.weight
+            let pokeHeight = "Height: " + pokemonData.height
+            let pokeWeight = "Weight: " + pokemonData.weight
             let pokeMoves = "Moves: "
 
             let pokeMoveLimit = 4
@@ -33,7 +93,7 @@ const displayPokemon = (pokemon) => {
 
             }
 
-            console.log(pokeMoves)
+            createCard(pokeNameCapitalized, profilePic, pokeTypes, pokeHeight, pokeWeight, pokeMoves)
         })
 }
 
