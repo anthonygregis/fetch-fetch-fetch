@@ -1,6 +1,7 @@
 const pokemonGeneration = "https://pokeapi.co/api/v2/pokemon/"
 const container = document.querySelector('.container')
 
+// Function returns the proper classes based on the poke type
 const getPokeTypeColor = (pokeTypes) => {
     console.log(pokeTypes)
     if (pokeTypes.includes("fire")) {
@@ -16,6 +17,7 @@ const getPokeTypeColor = (pokeTypes) => {
     }
 }
 
+// Takes all the information from the pokemon fetch and turns it into an html card that gets added into our base container
 const createCard = (pokeName, pokePic, pokeTypes, pokeHeight, pokeWeight, pokeMoves) => {
     let pokeCard = document.createElement('div')
     pokeCard.setAttribute('class', 'card m-2')
@@ -52,8 +54,6 @@ const createCard = (pokeName, pokePic, pokeTypes, pokeHeight, pokeWeight, pokeMo
     pokeCardMoves.classList.add('list-group-item')
     pokeCardMoves.textContent = pokeMoves
 
-
-
     pokeCardBody.append(pokeCardName, pokeCardTypes)
     pokeCardList.append(pokeCardHeight, pokeCardWeight, pokeCardMoves)
     pokeCard.append(pokeImage, pokeCardBody, pokeCardList)
@@ -61,6 +61,7 @@ const createCard = (pokeName, pokePic, pokeTypes, pokeHeight, pokeWeight, pokeMo
     container.appendChild(pokeCard)
 }
 
+// Loops through all the first 20 pokemon to then fetch each ones information and sends it to become a card
 const displayPokemon = (pokemon) => {
     fetch(pokemon.url).then(response => {
         if (response.ok) {
@@ -97,6 +98,7 @@ const displayPokemon = (pokemon) => {
         })
 }
 
+// Fetches the first 20 pokemon from the PokeApi
 fetch(pokemonGeneration).then(response => {
         if (response.ok) {
             return response.json()
