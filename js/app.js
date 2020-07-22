@@ -1,4 +1,5 @@
-const pokemonGeneration = "https://pokeapi.co/api/v2/pokemon/"
+const pokeRequestLimit = 100
+const pokemonGeneration = `https://pokeapi.co/api/v2/pokemon/?limit=${pokeRequestLimit}`
 const container = document.querySelector('.container')
 
 // Function returns the proper classes based on the poke type
@@ -6,13 +7,17 @@ const getPokeTypeColor = (pokeTypes) => {
     console.log(pokeTypes)
     if (pokeTypes.includes("fire")) {
         return "btn btn-outline-danger"
-    } else if (pokeTypes.includes("grass") || pokeTypes.includes("bug")) {
+    } else if (pokeTypes.includes("grass")) {
+        return "btn btn-outline-success"
+    } else if (pokeTypes.includes("poison")) {
+        return "btn btn-outline-dark"
+    } else if (pokeTypes.includes("bug")) {
         return "btn btn-outline-success"
     } else if (pokeTypes.includes("water")) {
         return "btn btn-outline-primary"
-    } else if (pokeTypes.includes("poison")) {
-        return "btn btn-outline-dark"
     } else if (pokeTypes.includes("normal")) {
+        return "btn btn-outline-secondary"
+    } else {
         return "btn btn-outline-secondary"
     }
 }
@@ -98,7 +103,7 @@ const displayPokemon = (pokemon) => {
         })
 }
 
-// Fetches the first 20 pokemon from the PokeApi
+// Fetches the specified amount of pokemon from the PokeApi
 fetch(pokemonGeneration).then(response => {
         if (response.ok) {
             return response.json()
